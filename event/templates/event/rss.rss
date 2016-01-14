@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+ <title>{{e.name}}</title>
+ <description>All Reservations for {{e.name}}</description>
+ <pubDate>{{e.pub_date}}</pubDate>
+ <ttl>1800</ttl>
+ 
+    {% for r in r %}
+    <item>
+        <title>{{r.name}}</title>
+        <description>reservation by {{r.getusername}} for {{r.duration}} on {{r.day}} starting at {{r.begin}}</description>
+        <pubDate>{{r.pub_date}}</pubDate>
+    </item>
+    {%endfor%}
+</channel>
+</rss>

@@ -1,0 +1,9 @@
+{% if allevents %}
+    <ul>
+    {% for event in allevents %}
+        <li><a href="/event/{{event.id }}/">{{ event.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No events are available.</p>
+{% endif %}

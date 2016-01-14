@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <style>
+            .delete{
+                padding:2px 5px;
+                border:solid black 1px;
+                cursor: pointer;
+                width:80px;
+                background-color:#ddd;
+                text-align:center;
+                margin:10px 0;
+                display: block;
+                text-decoration:none;
+            }
+        </style>
+        
+    </head>
+<body>
+    <a href='/event/{{event.id}}/rss'>RSS</a>
+{% if user.id != event.userid %}
+    <h1>{{ event.name }}</h1>
+        <h3>{{ event.start }} - {{ event.end }}</h3>
+    {% for tag in event.gettags %}
+        <a href='/event/tags/{{tag}}'>{{tag}}</a>&nbsp;,&nbsp;
+    {% endfor %}
+{% else %}
+    <form id="edit_event" method="post" action="/event/{{event.id}}/edit/" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ edit_event.as_p }}
+        <input type="submit" name="submit" value="submit edit" />
+    </form>
+    {% for tag in event.gettags %}
+        <a href='/event/tags/{{tag}}'>{{tag}}</a>&nbsp;,&nbsp;
+    {% endfor %}
+    <a class='delete' href='/event/{{event.id}}/deleteevent'>delete</a></li>
+{%endif%}
+    <h2>Make a Reservation for this event?</h2>
+    <form id="add_reservation" method="post" action="/event/{{event.id}}/eventpage/"
+    enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ add_reservation.as_p }}
+
+        <input type="submit" name="submit" value="make reservation" />
+    </form>
+    <h3>Reservations for this resource</h3>
+    <ul>
+    {% for reservation in allres %}
+        <li><strong><a href='/event/{{ reservation.event_id }}'>{{ reservation.name }}</a></strong><br />
+          <a href='/homeland/user/{{ reservation.getuserid }}'>{{reservation.getusername}}</a><br />
+        {{ reservation.day }} @ {{ reservation.begin }}<br />
+        {{ reservation.duration }}
+        </li>
+    {% endfor %}
+    </ul>

@@ -1,0 +1,15 @@
+{% if request.method != 'POST' %} 
+        <form id="add_event" method="post" action="/event/create/"
+                enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            {{ add_event.as_p }}
+
+
+            <input type="submit" name="submit" value="add event" />
+        </form>
+{% else %}
+Success! 
+<a href='/homeland/login'>return to home</a>
+{% endif %}

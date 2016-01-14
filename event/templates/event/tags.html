@@ -1,0 +1,7 @@
+{% for event in e %}
+    <h1><a href='/event/{{ event.id }}'><strong>{{ event.name }}</strong></a><br /></h1>
+    <h3>{{ event.start }} - {{ event.end }}</h3>
+    {% for tag in event.gettags %}
+        <a href='/event/tags/{{tag}}'>{{tag}}</a>&nbsp;,&nbsp;
+    {% endfor %}
+{% endfor %}
