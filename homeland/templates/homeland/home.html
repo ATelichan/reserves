@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <style>
+            .delete{
+                padding:2px 5px;
+                border:solid black 1px;
+                cursor: pointer;
+                width:80px;
+                background-color:#ddd;
+                text-align:center;
+                margin-bottom:10px;
+                display: block;
+                text-decoration:none;
+            }
+        </style>
+        
+    </head>
+<body>
+{% if user.is_authenticated %}
+    {% csrf_token %}
+    <a href="/logout/">Log Out</a><br />
+    <h1> hello {{ user.username }}!</h1>
+    <a href='/event/create/'>create resource</a>
+    <h3>my reservations</h3>
+    <ul>
+    {% for reservation in myres %}
+        <li><strong><a href='/event/{{ reservation.event_id }}'>{{ reservation.name }}</a></strong><br />
+        
+        {{reservation.day}} @ {{ reservation.begin }}<br />
+        {{ reservation.duration }}
+        {% if user.id == reservation.userid %}
+            <a class='delete' href='/event/{{reservation.id}}/deletereservation'>delete</a></li>
+        {%endif %}
+    {% endfor %}
+    </ul>
+    <h3>available resources</h3>
+    <ul>
+    {% for event in allevents %}
+        <li><a href='/event/{{ event.id }}'><strong>{{ event.name }}</strong></a><br />
+        {{ event.start }} -  {{ event.end }}</li>
+    {% endfor %}
+    </ul>
+    <h3>my resources</h3>
+    <ul>
+    {% for event in myevents %}
+        <li><a href='/event/{{ event.id }}'><strong>{{ event.name }}</strong></a><br />
+        {{event.day}} from 
+        {{ event.start }} -  {{ event.end }}</li>
+    {% endfor %}
+    </ul>
+
+{% else %}
+    {% csrf_token %}
+    <a href='/'>log in</a>
+{% endif %}
+    
+    </body>
+</html>

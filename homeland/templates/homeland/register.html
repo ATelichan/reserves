@@ -1,0 +1,18 @@
+{% if user.is_authenticated %}
+        <p>you registered {{user.username}}</p>
+        <a href="/">Return to the log in page.</a><br />
+        <a href="/logout/">Log Out</a><br />
+        {% else %}
+        go ahead and register : 
+
+        <form id="user_form" method="post" action="/register/"
+                enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            {{ user_form.as_p }}
+
+
+            <input type="submit" name="submit" value="Register" />
+        </form>
+        {% endif %}
