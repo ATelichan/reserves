@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'reserves.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'reserves',
-        'USER': 'postgres',
-        'PASSWORD': 'elkfilth5!',
-        'HOST': '127.0.0.1',
+        'NAME': 'd67amcuqk2e0fi',
+        'USER': 'illcukuedwxcwq',
+        'PASSWORD': 'sC-4JvlVRpRWvKEThSASu958iD',
+        'HOST': 'ec2-54-197-224-155.compute-1.amazonaws.com',
         
     }
 }
