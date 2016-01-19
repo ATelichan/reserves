@@ -80,7 +80,6 @@ WSGI_APPLICATION = 'reserves.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-<<<<<<< HEAD
         'NAME': 'd3317ku0do092f',
         'USER': 'bsejaruibuytny',
         'PASSWORD': 'MNm8mN_5ij1oIHwd_YO1o_ov8c',
