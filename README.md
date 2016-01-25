@@ -1,11 +1,5 @@
 # reserves
 
-Andrew Telichan-Phillips
-Open Source Tools
-Fall 2015
-Final Project Documentation
-
-
 Application Features
 The functioning application can be found at the following URL: 
 -https://fierce-bastion-1145.herokuapp.com/
@@ -22,7 +16,7 @@ Each resource provides a URL that can be used to (1) show the current and upcomi
 
 Start times and durations resources can be specified. If you try to make a reservation when a resource is not available, or is not within the available hours, the interface will not accept the reservation and explains why – e.g., “reservation outside of resource time range.”
 
-Each reservation displays the user, resource name, reservation time and duration. The resource name is linked to the resource page, and the user is linked to a page that shows all the reservations and resources for a user.
+As can be seen, each reservation displays the user, resource name, reservation time and duration. The resource name is linked to the resource page, and the user is linked to a page that shows all the reservations and resources for a user.
 
 Existing reservations can be deleted by the user who made the reservation. 
 
@@ -45,7 +39,18 @@ Model Forms are used, and when appropriate, form data is sent back to the same v
 
 Two open source third party widgets are used (“SelectTimeWidget” and “select_time_widget” to simplify the input of date and time objects.
 
-To address the functionality of the code in greater detail, we will go through the steps required to establish user registration, as well as event and reservation creation, referring to specific files and lines of code.
+Original versions were run on a local server by migrating to the project folder “reserves” and running the following commands:
+-python manage.py migrate
+-python manage.py makemigrations event
+-python manage.py makemigrations homeland
+-python manage.py migrate
+-python manage.py runserver
+
+Then pointing the browser to 127.0.0.1:8000.
+
+The final version was deployed using Heroku Git, following instructions at this site: https://devcenter.heroku.com/articles/git.  Additionally, some further dependencies were required to successfully deploy the app: runtime.txt, to specify the version of Python, requirements.txt to specify which libraries need to be installed, and Procfile to specify what command to run on the server-side to launch the website.  Additionally, a command “git rm -r *.pyc; echo *.pyc >> .gitignore” was run to make Git ignore compiled python (pyc) files.
+
+Although it’s not very practical to go through the entire code structure, to address the functionality of the code in greater detail, we will go through the steps required to establish user registration, as well as event and reservation creation, referring to specific files and lines of code.  Other aspects of the code basically operate in the same way as described below.
 
 
 Homeland App:
@@ -107,7 +112,11 @@ In App event —> views.py
 To event → templates → event → create.html with no context 
 -The request method in views.py is set to “POST,” and create.html declares “Success!” and returns user to login screen
 
+
 The remainder of this code operates in a very similar flow of information as described above, the standard Django workflow.  The URL that is sent to the browser is parsed by the urls.py files in order to call the appropriate views.py function. In the views.py function, data is gathered from the databases, parsed, and passed to the corresponding html template. The template renders HTML to the browser with the information that was passed from the views.py function.
+
+
+
 
  
 
