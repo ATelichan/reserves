@@ -44,28 +44,18 @@ There are two Django apps included: the first, “homeland,” handles the home 
 Model Forms are used, and when appropriate, form data is sent back to the same view and template from which it originated. Since the development was focused on creating a functional interface, only basic HTML markup was used. 
 
 Two open source third party widgets are used (“SelectTimeWidget” and “select_time_widget” to simplify the input of date and time objects.
-Original versions were run on a local server by migrating to the project folder “reserves” and running the following commands:
--python manage.py migrate
--python manage.py makemigrations event
--python manage.py makemigrations homeland
--python manage.py migrate
--python manage.py runserver
 
-Then pointing the browser to 127.0.0.1:8000.
-
-The final version was deployed using Heroku Git, following instructions at this site: https://devcenter.heroku.com/articles/git.  Additionally, some further dependencies were required to successfully deploy the app: runtime.txt, to specify the version of Python, requirements.txt to specify which libraries need to be installed, and Procfile to specify what command to run on the server-side to launch the website.  Additionally, a command “git rm -r *.pyc; echo *.pyc >> .gitignore” was run to make Git ignore compiled python (pyc) files.
-
-Although it’s not very practical to go through the entire code structure, to address the functionality of the code in greater detail, we will go through the steps required to establish user registration, as well as event and reservation creation, referring to specific files and lines of code.  Other aspects of the code basically operate in the same way as described below.
+To address the functionality of the code in greater detail, we will go through the steps required to establish user registration, as well as event and reservation creation, referring to specific files and lines of code.
 
 
 Homeland App:
-Upon visiting the URL, the system looks at urls.py in main reserves folder.  Inside this urls.py file are a series of potential URL structures that could come in using regular expressions and “include” statements.  If this structure of the particular URL is called, then a URL structure is set up in the homeland app folder.
+Upon visiting the URL, the system looks at urls.py in main reserves folder.  Inside this doc are a series of potential URL structures that could come in using regular expressions and “include” statements.  If this structure of the particular URL is called, then a URL structure is set up in the homeland app folder.
 
-Inside the homeland app, the file homeland → urls.py loads a particular view by calling a function that is defined in views.py file (e.g., “loginuser,” which includes a set of instructions that handles the creation of new users and their IDs, as well as subsequent log-in capabilities).  The system then runs through that particular function and sends user information form to the file located in the folder: homelands —> templates —> homeland —> index.html.  This user information is then sent to the URL, after which MAIN → reserves → urls.py will include the homeland —> urls.py.
+Inside the homeland app, the file homeland → urls.py loads a particular view by calling a function that is defined in views.py file (e.g., “loginuser,” which includes a set of instructions that handles the creation of new users and their IDs, as well as subsequent log-in capabilities).  The system then runs through that particular function and sends user information to the template file located in the folder: homelands —> templates —> homeland —> index.html.  User information is sent to the html file and rendered to the browser window.
 
-Returning to homeland → views.py, line 30, a “request.method” is used to look at the URL, and if a post is made, then the user form data was sent (the method checks data against Django user model to make sure the information matches, then loads the appropriate HTML file).  User data is then pulled from the database and is added to the dictionary variable “context,” which ensures that results are sent to template files, so that the HTML file(s) can update themselves.
+Returning to homeland → views.py, line 30, a “request.method” is used to look at the URL, and if a post is made, then the user form data was sent (the method checks data against Django’s native user model in order to make sure the information matches, then loads the appropriate HTML file).  User, Event, and Reservation data are then pulled from the database and are added to the dictionary variable “context,” which ensures that results are sent to template files, so that the HTML file(s) can render with the appropriate information.
 
-Finally, lines 18-19 of views.py call models from within the event app, which contains functions that deal with event and reservation creation.  
+Lines 18-19 include models from within the event app, which contain the frameworks for the creation of objects that deal with event and reservation creation and storage.  
 
 
 Event App:
@@ -94,7 +84,7 @@ This function creates an event, checks if user is there, and creates a user ID.
 
 In event → forms.py
 -Line 9 contains the AddEvent class
--Lines 18-20 create the form inputs, defining particular types of inputs (calling widgets)
+-Lines 18-20 create the form inputs, defining particular types of inputs (calling widgets — based on the following models: https://github.com/antihero/django-select-time-widget & https://www.djangosnippets.org/snippets/1202/)
 -Line 11, once the event is added, the “init” function is run, which gets passed any variable sent to the function as kwargs
 -Line 14 sets field user ID to ID that was passed from homeland → views.py
 -Line 22 contains a Meta class, which tells Django that the created form is dealing with an event, along with fields to use from the event model (defined in event —> models —> models.py)
@@ -104,10 +94,10 @@ In App event → views.py
 -Line 98 sends the form to event → templates → create.html,  and is submitted
 
 From MAIN folder reserves → reserves —> urls.py 
--Line 21 adds the event to the URL 
+-Line 21 adds the event to the URL (???)
 
 In App event → urls.py 
--Line 15 matches information to that entered in event → views.py → “createevent”
+Line 15 matches information to that entered in event → views.py → “createevent”
 
 In App event —> views.py 
 -Lines 84-85, AddEvent gets passed the current user id, plus information that came from the posting of the form
@@ -117,8 +107,8 @@ In App event —> views.py
 To event → templates → event → create.html with no context 
 -The request method in views.py is set to “POST,” and create.html declares “Success!” and returns user to login screen
 
+The remainder of this code operates in a very similar flow of information as described above, the standard Django workflow.  The URL that is sent to the browser is parsed by the urls.py files in order to call the appropriate views.py function. In the views.py function, data is gathered from the databases, parsed, and passed to the corresponding html template. The template renders HTML to the browser with the information that was passed from the views.py function.
 
-The remainder of this code operates according to a very similar flow of information as described above: once the URL structure is established, a particular “view” is called and a particular function is run that loads a form.  Once a POST message is received (after checking for valid entries), an HTML file is loaded and entered data is pulled from the server database and added to a “context” variable.  Depending on the model that is created – in this case “events” or “reservations” – and given all migrations have been made, whenever changes are made to the database a structure is created to handle the event and all properties within.
  
 
 
